@@ -124,7 +124,7 @@ describe('Paginate', () => {
           initialPage: 9
         }
       }).$mount()
-      expect(vm.$el.querySelector(`li:nth-child(3) a`).textContent).to.equal('...')
+      expect(vm.$el.querySelector(`li:nth-child(3) span`).textContent).to.equal('...')
       expect(vm.$el.querySelector(`li:nth-child(4) a`).textContent).to.equal('7')
     })
   })
