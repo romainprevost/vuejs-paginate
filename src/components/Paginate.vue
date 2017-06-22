@@ -1,13 +1,13 @@
 <template>
   <ul :class="containerClass">
-    <li :class="[prevClass, { disabled: firstPageSelected() }]">
+    <li v-show="! firstPageSelected" :class="prevClass">
       <a @click="prevPage()" @keyup.enter="prevPage()" :class="prevLinkClass" tabindex="0" v-html="prevText"></a>
     </li>
     <li v-for="page in pages" :class="[pageClass, { active: page.selected, disabled: page.disabled }]">
       <a v-if="page.disabled" :class="pageLinkClass" tabindex="0">{{ page.content }}</a>
       <a v-else @click="handlePageSelected(page.index)" @keyup.enter="handlePageSelected(page.index)" :class="pageLinkClass" tabindex="0">{{ page.content }}</a>
     </li>
-    <li :class="[nextClass, { disabled: lastPageSelected() }]">
+    <li v-show="! lastPageSelected" :class="nextClass">
       <a @click="nextPage()" @keyup.enter="nextPage()" :class="nextLinkClass" tabindex="0" v-html="nextText"></a>
     </li>
   </ul>
@@ -142,6 +142,12 @@ export default {
         }
       }
       return items
+    },
+    firstPageSelected() {
+        return this.selected === 0
+    },
+    lastPageSelected() {
+        return (this.selected === this.pageCount - 1) || (this.pageCount === 0)
     }
   },
   methods: {
@@ -165,12 +171,6 @@ export default {
       this.selected ++
 
       this.clickHandler(this.selected + 1)
-    },
-    firstPageSelected() {
-      return this.selected === 0
-    },
-    lastPageSelected() {
-      return (this.selected === this.pageCount - 1) || (this.pageCount === 0)
     }
   }
 }
