@@ -4,7 +4,7 @@
       <a @click="prevPage()" @keyup.enter="prevPage()" :class="prevLinkClass" tabindex="0" v-html="prevText"></a>
     </li>
     <li v-for="page in pages" :class="[pageClass, { active: page.selected, disabled: page.disabled }]">
-      <a v-if="page.disabled" :class="pageLinkClass" tabindex="0">{{ page.content }}</a>
+      <span v-if="page.disabled" :class="pageLinkClass" tabindex="0">{{ page.content }}</span>
       <a v-else @click="handlePageSelected(page.index)" @keyup.enter="handlePageSelected(page.index)" :class="pageLinkClass" tabindex="0">{{ page.content }}</a>
     </li>
     <li v-show="! lastPageSelected" :class="nextClass">
