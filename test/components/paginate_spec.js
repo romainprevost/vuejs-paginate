@@ -6,28 +6,32 @@ describe('Paginate', () => {
   function initComponent() {
     return new Component({
       propsData: {
-        pageCount: 10
+          prevClass: 'previousButton',
+          nextClass: 'nextButton',
+          pageLinkClass: 'pageLink',
+          pageCount: 10
       }
     }).$mount()
   }
 
   describe('Simple Cases', () => {
-    it('success', () => {
+    it('Successful instantiation', () => {
       const vm = initComponent()
       expect(vm.$el.querySelector("li:first-child a").textContent).to.equal("Prev")
       expect(vm.$el.querySelector("li:last-child a").textContent).to.equal("Next")
       expect(vm.$el.querySelector(".active a").textContent).to.equal("1")
+      // expect(vm.$el.getElementsByClassName("pageLink").length).to.equal(10)
     })
 
     it('next and prev button event right', () => {
       const vm = initComponent()
-      const nextButton = vm.$el.querySelector("li:last-child a")
+      const nextButton = vm.$el.querySelector(".nextButton")
       nextButton.click()
 
       Vue.nextTick(() => {
         expect(vm.$el.querySelector(".active a").textContent).to.equal("2")
 
-        const prevButton = vm.$el.querySelector("li:first-child a")
+        const prevButton = vm.$el.querySelector(".previousButton")
         prevButton.click()
 
         Vue.nextTick(() => {
@@ -37,14 +41,21 @@ describe('Paginate', () => {
     })
 
     it('prev button when first page', () => {
-      const vm = initComponent()
-      const prevButton = vm.$el.querySelector("li:first-child a")
-      prevButton.click()
-
-      Vue.nextTick(() => {
-        expect(vm.$el.querySelector(".active a").textContent).to.equal("1")
-      })
+        const vm = initComponent()
+        Vue.nextTick(() => {
+            expect(vm.$el.querySelector(".active a.previousButton")).to.be(undefined)
+        });
     })
+
+      it('next button when last page', () => {
+          const vm = initComponent()
+          const lastLink = vm.$el.querySelector(".pageLink:last-child")
+          // console.log(lastLink)
+          lastLink.click();
+          Vue.nextTick(() => {
+              expect(vm.$el.querySelector(".active a.nextButton")).to.be(1)
+          });
+      })
 
     it('click page element', () => {
       const vm = initComponent()
